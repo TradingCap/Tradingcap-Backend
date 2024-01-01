@@ -39,11 +39,11 @@ const verifyAdmin = (req, res, next) => {
         error: err
       })
     }
+    req.adminId = decoded.id
+    req.userType = decoded.userType
 
     if (req.userType !== 'ADMIN')
       return res.status(403).json({ message: 'Unauthorized, not an admin' })
-    req.userId = decoded.id
-    req.userType = decoded.userType
     next()
   })
 }

@@ -8,25 +8,23 @@ const authMiddleware = require('../../middlewares/authMiddleware')
 router.post(
   '/sign-up',
   validate(adminValidator.signupSchema),
-  authMiddleware.verifyAdmin,
   adminController.signup
 )
 
 router.post(
   '/sign-in',
   validate(adminValidator.signinSchema),
-  authMiddleware.verifyAdmin,
   adminController.signin
 )
 
 router.get(
-  '/get-user-payment',
+  '/get-user-payment/:transactionId',
   authMiddleware.verifyAdmin,
   adminController.getUserPayment
 )
 
 router.put(
-  '/update-user',
+  '/update-payment/:transactionId',
   authMiddleware.verifyAdmin,
   adminController.updateUser
 )

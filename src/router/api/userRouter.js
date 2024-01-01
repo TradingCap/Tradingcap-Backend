@@ -6,7 +6,7 @@ const userController = require('../../controllers/userController')
 const authMiddleware = require('../../middlewares/authMiddleware')
 
 router.get(
-  '/get-payment',
+  '/get-payment/:transactionId',
   authMiddleware.verifyToken,
   userController.getPayment
 )

@@ -6,6 +6,7 @@ const send = require('../utils/sendEmail')
 const makeOtp = require('../utils/otp')
 
 const User = require('../DB/models/user')
+const Payment = require('../DB/models/payment')
 
 exports.signup = catchAsync(async (req, res) => {
   const { fullName, email, password } = req.body
@@ -37,7 +38,7 @@ exports.signup = catchAsync(async (req, res) => {
   return res.status(200).json({
     success: true,
     message:
-      'User was registered successfully! An confirmation code has been sent to your email for verification.',
+      'User was registered successfully! A confirmation code has been sent to your email for verification.',
     accessToken: token
   })
 })
@@ -68,7 +69,7 @@ exports.signin = async (req, res) => {
     if (!verifyStatus) {
       return res.status(401).json({
         success: false,
-        message: 'Please verify your acoount'
+        message: 'Please verify your account'
       })
     }
 
@@ -101,19 +102,42 @@ exports.signin = async (req, res) => {
 }
 
 exports.getUserPayment = catchAsync(async (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message:
-      'User was registered successfully! An confirmation code has been sent to your email for verification.',
-    accessToken: token
-  })
+  try {
+    const { transactionId } = req.params
+
+    const payment = await Payment.findOne({ transactionId: transactionId })
+
+    if (!payment) {
+      return res.status(500).json({ message: 'Payment not found.' })
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Payment retrieved.',
+      data: payment
+    })
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message })
+  }
 })
 
 exports.updateUser = catchAsync(async (req, res) => {
-  return res.status(200).json({
-    success: true,
-    message:
-      'User was registered successfully! An confirmation code has been sent to your email for verification.',
-    accessToken: token
-  })
+  try {
+    const { transactionId } = req.params
+
+    const payment = await Payment.findOne({ transactionId: transactionId })
+
+    if (!payment) {
+      return res.status(500).json({ message: 'Payment not found.' })
+    }
+
+    payment.status = 'APPROVED'
+    await payment.save()
+    return res.status(200).json({
+      success: true,
+      message: 'Payment updated successfully.',
+      data: payment
+    })
+  } catch (err) {
+    return res.status(500).json({ success: false, message: err.message })
+  }
 })

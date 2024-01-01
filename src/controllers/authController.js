@@ -63,7 +63,7 @@ exports.signin = async (req, res) => {
     if (!verifyStatus) {
       return res.status(401).json({
         success: false,
-        message: 'Please verify your acoount'
+        message: 'Please verify your account'
       })
     }
 
@@ -112,7 +112,7 @@ exports.updatePassword = catchAsync(async (req, res) => {
     })
 
     if (!user) {
-      throw res.status(500).json({ message: 'Invalid User' })
+      return res.status(500).json({ message: 'Invalid User' })
     }
 
     user.password = req.body.password//await bcrypt.hash(req.body.password, 10)

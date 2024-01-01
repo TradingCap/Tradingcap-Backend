@@ -7,7 +7,7 @@ const PaymentSchema = new Schema(
     user: 
       {
         type: Schema.Types.ObjectId,
-        ref: 'Users'
+        ref: 'users'
       }
     ,
     amount: {
@@ -33,8 +33,6 @@ const PaymentSchema = new Schema(
     }
   },
 )
-
-
 
 const Payment = mongoose.model('payments', PaymentSchema)
 

@@ -1,19 +1,21 @@
 const User = require('../DB/models/user')
 const Payment = require('../DB/models/payment')
 const { v4: uuidv4 } = require('uuid')
+const send = require('../utils/sendEmail')
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const user = await User.findOne({ id: req.userId })
+    const user = await User.findOne({ _id: req.userId })
       .select({
         password: false,
         __v: false
       })
-      .populate('Payments')
+      .populate('payments')
 
     if (!user) {
-      throw new NotFoundError('user not Found')
+      return res.status(500).json({ message: 'User not found.' })
     }
+
     return res.status(200).json({
       success: true,
       message: 'User profile retrieved.',
@@ -36,12 +38,15 @@ exports.makePayment = async (req, res) => {
       amount,
       transactionId: transactionid
     })
-    let user = await User.findOne({ id: req.userId })
-      .select({
-        password: false,
-        __v: false
-      })
-      user.payments.push(req.userId)
+    let user = await User.findOne({ _id: req.userId }).select({
+      password: false,
+      __v: false
+    })
+    user.payments.push(payment._id)
+
+    await user.save()
+    await send.sendPaymentEmail(user, amount)
+
     return res.status(200).json({
       success: true,
       message: 'Payment submitted for review',
@@ -59,8 +64,8 @@ exports.getPayments = async (req, res) => {
   try {
     const payments = await Payment.find({ user: req.userId })
 
-    if (payments.length === 0) {
-      throw new NotFoundError('No payment history Found')
+    if (!payments) {
+      return res.status(500).json({ message: 'No payment history found.' })
     }
     return res.status(200).json({
       success: true,
@@ -78,10 +83,11 @@ exports.getPayments = async (req, res) => {
 exports.getPayment = async (req, res) => {
   try {
     const { transactionId } = req.params
+
     const payment = await Payment.findOne({ transactionId: transactionId })
 
     if (!payment) {
-      throw new NotFoundError('payment not Found')
+      return res.status(500).json({ message: 'Payment not found.' })
     }
     return res.status(200).json({
       success: true,
