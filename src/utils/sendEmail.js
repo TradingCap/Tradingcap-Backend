@@ -7,11 +7,10 @@ const EMAIL_FROM_TRADING_CAP = process.env.TRADING_CAP;
 const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 const EMAIL_PORT = process.env.EMAIL_PORT;
 
-
-exports.sendEmailVerification = async (user) => {
+exports.sendEmailVerification = async (user, token) => {
     const transporter = nodemailer.createTransport({
         host: EMAIL_SERVER,
-        port: EMAIL_PORT,
+        port: +EMAIL_PORT,
         secure: false,
         auth: {
             user: EMAIL_USER,
@@ -50,7 +49,7 @@ exports.sendEmailVerification = async (user) => {
 exports.sendPasswordResetSuccessMail = async (user) => {
     const transporter = nodemailer.createTransport({
         host: EMAIL_SERVER,
-        port: EMAIL_PORT,
+        port: +EMAIL_PORT,
         secure: false,
         auth: {
             user: EMAIL_USER,
@@ -89,7 +88,7 @@ exports.sendPasswordResetSuccessMail = async (user) => {
 exports.sendPasswordResetMail = async (user, token) => {
     const transporter = nodemailer.createTransport({
         host: EMAIL_SERVER,
-        port: EMAIL_PORT,
+        port: +EMAIL_PORT,
         secure: false,
         auth: {
             user: EMAIL_USER,
@@ -129,7 +128,7 @@ exports.sendPasswordResetMail = async (user, token) => {
 exports.sendPaymentEmail = async (user, amount) => {
     const transporter = nodemailer.createTransport({
         host: EMAIL_SERVER,
-        port: EMAIL_PORT,
+        port: +EMAIL_PORT,
         secure: false,
         auth: {
             user: EMAIL_USER,
