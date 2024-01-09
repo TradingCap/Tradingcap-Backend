@@ -41,6 +41,7 @@ exports.sendEmailVerification = async (user, token) => {
         subject: "Welcome message", // Subject line
         context: {
             name: user.email,
+            token: token
         },
         template: "trading-cap-verification-message",
     });
