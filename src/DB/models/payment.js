@@ -18,6 +18,10 @@ const PaymentSchema = new Schema(
       type: String,
       required: true
     },
+    coinName: {
+      type: String,
+      required: true
+    },
     status: {
         type: String,
         enum: ['APPROVED', 'PENDING'],

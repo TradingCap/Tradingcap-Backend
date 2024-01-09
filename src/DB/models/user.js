@@ -28,6 +28,13 @@ const UserSchema = new Schema(
     passwordToken: {
       type: String,
     },
+    referrer: {
+      type: String,
+    },
+    userRef: {
+      type: String,
+      required: true
+    },
     status: {
       type: String,
       enum: ['ACTIVE', 'PENDING', 'INACTIVE'],

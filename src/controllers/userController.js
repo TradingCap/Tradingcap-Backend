@@ -31,8 +31,29 @@ exports.getUserProfile = async (req, res) => {
 
 exports.makePayment = async (req, res) => {
   try {
-    const { amount } = req.body
-    const transactionid = uuidv4().replace(/[- ]/g, '')
+    const { amount, coinName } = req.body
+    const transactionid = uuidv4().replace(/[- ]/g, '').slice(0, 8)
+
+    const coin = Object.freeze({
+      BITCOIN: 'BITCOIN',
+      USDT: 'USDT (TRC20)',
+      ETH: 'ETH (ERC20)'
+    })
+
+    let coinNameValue
+    if (coinName) {
+      coinNameValue = coinName.toUpperCase()
+    }
+
+    if (Object.values(coin).includes(coinNameValue)) {
+      coinNameValue = coin['coinNameValue']
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'coin name invalid'
+      })
+    }
+
     const payment = await Payment.create({
       user: req.userId,
       amount,
@@ -93,6 +114,60 @@ exports.getPayment = async (req, res) => {
       success: true,
       message: 'Payment retrieved.',
       data: payment
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message
+    })
+  }
+}
+
+exports.getReferrerLink = async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.userId }).select({
+      password: false,
+      __v: false
+    })
+
+    if (!user) {
+      return res.status(500).json({ message: 'User not found.' })
+    }
+
+    const referrer = `${user.fullName.split(' ')[0]}-${user.userRef}`
+    const referrerLink = `${process.env.BASE_URL}/api/auth/sign-up?referrer=${referrer}`
+
+    return res.status(200).json({
+      success: true,
+      message: 'Link retrieved.',
+      referrerLink
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message
+    })
+  }
+}
+
+exports.sendInviteLink = async (req, res) => {
+  try {
+    const { email, referrerLink } = req.body
+
+    const user = await User.findOne({ _id: req.userId }).select({
+      password: false,
+      __v: false
+    })
+
+    if (!user) {
+      return res.status(500).json({ message: 'User not found.' })
+    }
+
+    await send.sendInviteEmail(user, email, referrerLink)
+
+    return res.status(200).json({
+      success: true,
+      message: 'Invite sent'
     })
   } catch (err) {
     return res.status(500).json({

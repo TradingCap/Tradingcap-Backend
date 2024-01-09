@@ -12,7 +12,7 @@ router.get(
 )
 
 router.get(
-  '/get-payments',    
+  '/get-payments',
   authMiddleware.verifyToken,
   userController.getPayments
 )
@@ -28,6 +28,19 @@ router.post(
   validate(userValidator.makePaymentSchema),
   authMiddleware.verifyToken,
   userController.makePayment
+)
+
+router.post(
+  '/send-invite-link',
+  validate(userValidator.sendInviteLinkSchema),
+  authMiddleware.verifyToken,
+  userController.sendInviteLink
+)
+
+router.get(
+  '/get-referrer-link',
+  authMiddleware.verifyToken,
+  userController.getReferrerLink
 )
 
 module.exports = router

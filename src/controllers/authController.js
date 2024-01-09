@@ -4,11 +4,14 @@ const bcrypt = require('bcryptjs')
 const catchAsync = require('express-async-handler')
 const send = require('../utils/sendEmail')
 const makeOtp = require('../utils/otp')
+const { v4: uuidv4 } = require('uuid')
 
 const User = require('../DB/models/user')
 
 exports.signup = catchAsync(async (req, res) => {
   const { fullName, email, password } = req.body
+  const { referrer } = req.query
+  const userRef = uuidv4().replace(/[- ]/g, '').slice(0, 8)
   const emailToken = makeOtp(4)
 
   const existUser = await User.findOne({ email: email.toLowerCase() })
@@ -20,7 +23,9 @@ exports.signup = catchAsync(async (req, res) => {
     fullName,
     password,
     email: email.toLowerCase(),
-    emailToken: emailToken
+    emailToken: emailToken,
+    userRef: userRef,
+    referrer: referrer
   })
 
   const token = jwt.sign({ id: newUser.id }, process.env.JWT_SECRET, {
@@ -115,7 +120,7 @@ exports.updatePassword = catchAsync(async (req, res) => {
       return res.status(500).json({ message: 'Invalid User' })
     }
 
-    user.password = req.body.password//await bcrypt.hash(req.body.password, 10)
+    user.password = req.body.password //await bcrypt.hash(req.body.password, 10)
     await user.save()
 
     await send.sendPasswordResetSuccessMail(user)
