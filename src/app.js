@@ -66,7 +66,14 @@ if (NODE_ENV === "production") {
 }
 
 const corsOptions = {
-    origin: [BASE_URL],    
+    origin: function (origin, callback) {
+        const allowedOrigins = ["http://localhost:3000", "https://trading-website-six.vercel.app"]
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },    
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Date", "Content-Type", "Origin", "Authorization"],
     credentials: true,
