@@ -44,8 +44,8 @@ exports.makePayment = async (req, res) => {
     if (coinName) {
       coinNameValue = coinName.toUpperCase()
     }
-
-    if (Object.values(coin).includes(coinNameValue)) {
+    console.log(coinNameValue)
+    if (Object.keys(coin).includes(coinNameValue)) {
       coinNameValue = coin[coinNameValue]
     } else {
       return res.status(400).json({
@@ -53,7 +53,7 @@ exports.makePayment = async (req, res) => {
         message: 'coin name invalid'
       })
     }
-
+    console.log(coinNameValue)
     const payment = await Payment.create({
       user: req.userId,
       amount,
