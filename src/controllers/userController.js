@@ -36,15 +36,15 @@ exports.makePayment = async (req, res) => {
 
     const coin = Object.freeze({
       BITCOIN: 'BITCOIN',
-      USDT: 'USDT (TRC20)',
-      ETH: 'ETH (ERC20)'
+      "USDT (TRC20)": 'USDT (TRC20)',
+      "ETH (ERC20)": 'ETH (ERC20)'
     })
 
     let coinNameValue
     if (coinName) {
       coinNameValue = coinName.toUpperCase()
     }
-    console.log(coinNameValue)
+
     if (Object.keys(coin).includes(coinNameValue)) {
       coinNameValue = coin[coinNameValue]
     } else {
@@ -53,7 +53,7 @@ exports.makePayment = async (req, res) => {
         message: 'coin name invalid'
       })
     }
-    console.log(coinNameValue)
+
     const payment = await Payment.create({
       user: req.userId,
       amount,
