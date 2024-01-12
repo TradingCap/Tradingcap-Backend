@@ -46,7 +46,7 @@ exports.makePayment = async (req, res) => {
     }
 
     if (Object.values(coin).includes(coinNameValue)) {
-      coinNameValue = coin['coinNameValue']
+      coinNameValue = coin[coinNameValue]
     } else {
       return res.status(400).json({
         success: false,
@@ -57,8 +57,10 @@ exports.makePayment = async (req, res) => {
     const payment = await Payment.create({
       user: req.userId,
       amount,
-      transactionId: transactionid
+      transactionId: transactionid,
+      coinName: coinNameValue
     })
+
     let user = await User.findOne({ _id: req.userId }).select({
       password: false,
       __v: false
