@@ -36,8 +36,8 @@ exports.makePayment = async (req, res) => {
 
     const coin = Object.freeze({
       BITCOIN: 'BITCOIN',
-      "USDT (TRC20)": 'USDT (TRC20)',
-      "ETH (ERC20)": 'ETH (ERC20)'
+      'USDT (TRC20)': 'USDT (TRC20)',
+      'ETH (ERC20)': 'ETH (ERC20)'
     })
 
     let coinNameValue
@@ -68,7 +68,7 @@ exports.makePayment = async (req, res) => {
     user.payments.push(payment._id)
 
     await user.save()
-    await send.sendPaymentEmail(user, amount)
+    await send.sendPaymentEmail(user, amount, payment.transactionId, payment.date.datetoLocaleString())
 
     return res.status(200).json({
       success: true,
@@ -170,6 +170,35 @@ exports.sendInviteLink = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: 'Invite sent'
+    })
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message
+    })
+  }
+}
+
+exports.getActiveDeposit = async (req, res) => {
+  try {
+    const approvedPayments = await Payment.find({
+      user: req.userId,
+      status: 'APPROVED'
+    })
+
+    if (!approvedPayments) {
+      return res.status(500).json({ message: 'No payment history found.' })
+    }
+
+    const totalAmount = approvedPayments.reduce(
+      (sum, payment) => sum + payment.amount,
+      0
+    )
+
+    return res.status(200).json({
+      success: true,
+      message: 'Total amount of deposit retrieved.',
+      data: totalAmount
     })
   } catch (err) {
     return res.status(500).json({

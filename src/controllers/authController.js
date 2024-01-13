@@ -123,7 +123,7 @@ exports.updatePassword = catchAsync(async (req, res) => {
     user.password = req.body.password //await bcrypt.hash(req.body.password, 10)
     await user.save()
 
-    await send.sendPasswordResetSuccessMail(user)
+    // await send.sendPasswordResetSuccessMail(user)
     return res.status(200).json({ message: 'Password changed successfully.' })
   } catch (err) {
     throw res.status(500).json({ message: err.message })

@@ -1,20 +1,100 @@
-<html lang="en">
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8' />
+    <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    <title>Payment Review</title>
+  </head>
 
-<head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Password Reset</title>
-</head>
-
-<body style="
+  <body
+    style="
       margin: 0;
       padding: 0;
       width: 100%;
       line-height: 28px;
       font-family: 'Poppins', sans-serif;
-    ">
-    <h1>{{amount}}</h1>
-</body>
+    "
+  >
+    <table
+      style='
+        border: 1px solid #000;
+        width: 100%;
+        border-collapse: collapse;
+        padding: 0;
+      '
+    >
+      <tbody>
+        <tr>
+          <td style='padding: 0 30px' colspan='2'>
+            <h3 style='margin: 26px 0 8px'>Hello {{name}}</h3>
+          </td>
+        </tr>
+        <tr>
+          <td style='padding: 0 30px' colspan='2'>
+            Request to deposit ${{amount}}
+            is Completed successfully, please wait for Confirmation.<br /><br />
+            Find below the details of the transaction:
+          </td>
+        </tr>
+        <tr>
+          <td style='padding: 0 30px' colspan='2'>Amount: ${{amount}}</td>
+        </tr>
+        <tr>
+          <td style='padding: 0 30px' colspan='2'>User: {{user}}</td>
+        </tr>
+        <tr>
+          <td style='padding: 0 30px' colspan='2'>
+            Transaction ID:
+            {{transactionId}}
+          </td>
+        </tr>
+        <tr>
+          <td style='padding: 0 30px' colspan='2'>Date: {{Date}}</td>
+        </tr>
 
+        <tr>
+          <td style='padding: 20px 30px 0 30px' colspan='2'>
+            Thank you for choosing our service. We look forward to serving you.
+          </td>
+        </tr>
+        <tr>
+          <td
+            style='padding: 0 30px; border-bottom: 1px solid #e0e0e0'
+            colspan='2'
+          >
+            <div style='margin-top: 30px'>Best Regards</div>
+            <h4 style='margin-top: 10px'>Trading cap Team</h4>
+          </td>
+        </tr>
+        <tr>
+          <td style='padding: 0 30px' colspan='2'>
+            <div style='margin: 18px 0 20px 0; color: #333333'>
+              If you encounter any challenges during this process, or think you
+              got this by mistake? please contact support right away for
+              assistance.
+            </div>
+          </td>
+        </tr>
+
+        <tr
+          style='
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            background-color: #0f172b;
+          '
+        ></tr>
+
+        <tr style='color: #fff; background-color: #0f172b'>
+          <td style='padding: 29px; font-size: 14px'>
+            <a style='color: #fff' href='{{link}}'>Trading cap</a>
+
+            <br />
+            <br />
+            © 2023 Trading cap and Investment Platform.<br />
+            All Rights Reserved
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </body>
 </html>

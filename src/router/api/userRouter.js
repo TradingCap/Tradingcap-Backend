@@ -43,4 +43,10 @@ router.get(
   userController.getReferrerLink
 )
 
+router.get(
+  '/get-active-deposit',
+  authMiddleware.verifyToken,
+  userController.getActiveDeposit
+)
+
 module.exports = router
