@@ -49,4 +49,11 @@ router.get(
   userController.getActiveDeposit
 )
 
+router.post(
+  '/send-mail-to-support',
+  validate(userValidator.sendMailTosupport),
+  authMiddleware.verifyToken,
+  userController.sendMailTosupport
+)
+
 module.exports = router

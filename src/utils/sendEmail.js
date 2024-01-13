@@ -208,3 +208,44 @@ exports.sendInviteEmail = async (user, email, referrerLink) => {
     template: 'trading-cap-send-invite-link'
   })
 }
+
+// exports.sendEmailToSupport = async (user, email, body) => {
+//   const transporter = nodemailer.createTransport({
+//     host: EMAIL_SERVER,
+//     port: +EMAIL_PORT,
+//     secure: false,
+//     auth: {
+//       user: EMAIL_USER,
+//       pass: EMAIL_PASSWORD // generated ethereal password
+//     },
+//     tls: {
+//       rejectUnauthorized: false
+//     }
+//   })
+//   const options = {
+//     viewEngine: {
+//       extName: '.hbs',
+//       layoutsDir: __dirname + '/../../src/views/email',
+//       partialsDir: __dirname + '/../../src/views/email',
+//       defaultLayout: 'trading-cap-send-invite-link.hbs'
+//     },
+//     extName: '.hbs' /* or '.handlebars' */,
+//     viewPath: __dirname + '/../../src/views/email',
+//     layoutsDir: __dirname + '/../../src/views/email',
+//     partialsDir: __dirname + '/../../src/views/email',
+//     defaultLayout: ''
+//   }
+//   await transporter.use('compile', hbs(options))
+//   // send mail with defined transport object
+//   /*let info =*/ transporter.sendMail({
+//     from: `${'TRADING CAP <' + EMAIL_FROM_TRADING_CAP + '>'}`, // sender address
+//     to: email, // list of receivers
+//     subject: 'Trading Cap Invitation', // Subject line
+//     context: {
+//       name: user.email,
+//       email: email,
+//       referrerLink: referrerLink
+//     },
+//     template: 'trading-cap-send-invite-link'
+//   })
+// }

@@ -68,7 +68,12 @@ exports.makePayment = async (req, res) => {
     user.payments.push(payment._id)
 
     await user.save()
-    await send.sendPaymentEmail(user, amount, payment.transactionId, payment.date.datetoLocaleString())
+    await send.sendPaymentEmail(
+      user,
+      amount,
+      payment.transactionId,
+      payment.createdAt.toLocaleString()
+    )
 
     return res.status(200).json({
       success: true,
@@ -212,10 +217,9 @@ exports.sendMailTosupport = async (req, res) => {
   try {
     const { email, body } = req.body
 
-
     return res.status(200).json({
       success: true,
-      message: 'Email sent to support.',
+      message: 'Email sent to support.'
     })
   } catch (err) {
     return res.status(500).json({
@@ -223,6 +227,4 @@ exports.sendMailTosupport = async (req, res) => {
       message: err.message
     })
   }
-
-  sendMailTosupport
 }
