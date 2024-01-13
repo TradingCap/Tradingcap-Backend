@@ -67,7 +67,7 @@ if (NODE_ENV === "production") {
 
 const corsOptions = {
     origin: function (origin, callback) {
-        const allowedOrigins = ["http://localhost:3000", "https://trading-website-six.vercel.app"]
+        const allowedOrigins = ["http://localhost:3000", "https://trading-website-six.vercel.app", "https://tradingcaptech.com"]
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
