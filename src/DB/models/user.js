@@ -31,10 +31,6 @@ const UserSchema = new Schema(
     referrer: {
       type: String,
     },
-    userId: {
-      type: String,
-      type: String,
-    },
     userRef: {
       type: String,
       required: true

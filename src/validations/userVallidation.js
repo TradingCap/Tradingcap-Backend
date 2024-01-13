@@ -17,7 +17,18 @@ const sendInviteLinkSchema = yup.object().shape({
   })
 })
 
+const sendMailTosupport = yup.object().shape({
+  body: yup.object().shape({
+    email: yup
+      .string()
+      .email('Please enter valid email')
+      .required('Email Address is Required'),
+    body: yup.string().required('Email body is Required')
+  })
+})
+
 module.exports = {
   makePaymentSchema,
-  sendInviteLinkSchema
+  sendInviteLinkSchema,
+  sendMailTosupport
 }
