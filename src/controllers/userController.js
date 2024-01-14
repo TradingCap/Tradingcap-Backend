@@ -75,6 +75,13 @@ exports.makePayment = async (req, res) => {
       payment.createdAt.toLocaleString()
     )
 
+    await send.sendPaymentEmailToAdmin(
+      user,
+      amount,
+      payment.transactionId,
+      payment.createdAt.toLocaleString()
+    )
+
     return res.status(200).json({
       success: true,
       message: 'Payment submitted for review',
