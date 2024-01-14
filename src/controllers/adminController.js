@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs')
 const catchAsync = require('express-async-handler')
 const send = require('../utils/sendEmail')
 const makeOtp = require('../utils/otp')
+const { v4: uuidv4 } = require('uuid')
 
 const User = require('../DB/models/user')
 const Payment = require('../DB/models/payment')
@@ -11,6 +12,7 @@ const Payment = require('../DB/models/payment')
 exports.signup = catchAsync(async (req, res) => {
   const { fullName, email, password } = req.body
   const emailToken = makeOtp(4)
+  const userRef = uuidv4().replace(/[- ]/g, '').slice(0, 8)
 
   const existUser = await User.findOne({ email: email.toLowerCase() })
   if (existUser) {
@@ -22,7 +24,8 @@ exports.signup = catchAsync(async (req, res) => {
     password,
     email: email.toLowerCase(),
     emailToken: emailToken,
-    userType: 'ADMIN'
+    userType: 'ADMIN',
+    userRef: userRef,
   })
 
   const token = jwt.sign(
